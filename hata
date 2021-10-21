@@ -1,0 +1,31 @@
+import React, { useState } from "react";
+
+function chat({socket, userName, room}) {
+    const [currentMessage, setCurrentMessage] = useState("");
+    const [messageList, setMessageList] = useState("");
+    const sendMessage = () =>  {
+        if(currentMessage !== ""){
+            const messageData  ={
+                room: room,
+                author: userName,
+                message: currentMessage,
+                time: new Date(Date.now()).getHours() + ":" + new Date(Date.name()).getMinutes()
+            };
+             socket.emit("send_message", messageData);
+        }
+    }
+    return (
+        <div>
+            <div className="chat-header">
+                <p>Live Chat</p>
+            </div>
+            <div className="chat-body"></div>
+            <div className="chat-footer">
+                <input type="text" placeholder="Hey..."/>
+                <button onClick={sendMessage}>&#9658;</button>
+            </div>
+        </div>
+    )
+}
+
+export default chat;
